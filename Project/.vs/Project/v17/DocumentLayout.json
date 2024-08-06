@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\GitRepo\\AssignmentsRepo\\DSProject\\Project\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3CF2A30F-6267-49B1-9972-DBD33F40D995}|Project\\Project.vcxproj|E:\\GitRepo\\AssignmentsRepo\\DSProject\\Project\\Project\\Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3CF2A30F-6267-49B1-9972-DBD33F40D995}|Project\\Project.vcxproj|solutionrelative:Project\\Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:36:0:{dcc4ea97-1c0c-482b-b205-e541c0df9728}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Source.cpp",
+              "DocumentMoniker": "E:\\GitRepo\\AssignmentsRepo\\DSProject\\Project\\Project\\Source.cpp",
+              "RelativeDocumentMoniker": "Project\\Source.cpp",
+              "ToolTip": "E:\\GitRepo\\AssignmentsRepo\\DSProject\\Project\\Project\\Source.cpp",
+              "RelativeToolTip": "Project\\Source.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-08-06T04:07:15.517Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
