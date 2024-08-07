@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define HASH_TABLE_SIZE     127
 #define ENTRY_SIZE          50
@@ -37,21 +38,28 @@ Parcel* findMaxWeight(Parcel* root);
 Parcel* findMinWeight(Parcel* root); 
 Parcel* findCheapestParcel(Parcel* root);
 Parcel* findMostExpensiveParcel(Parcel* root);
+int sumOfParcelsWgt(Parcel* root);
+float sumOfParcelsVal(Parcel* root);
 void printBSTInOrder(Parcel* root);
+
+void printSectionLowerThanWgt(Parcel* root, int partitionWgt);
+void printSectionHigherThanWgt(Parcel* root, int partitionWgt);
 void deleteBST(Parcel* root);
 
 // functions for hash table
 int generateHash(char* str);
 void insertHashTableWithBST(Parcel* table[], char* dest, int weight, float value);
-void deleteHashTable(Parcel* table[HASH_TABLE_SIZE]);
-Parcel* searchHashTable(Parcel* table[HASH_TABLE_SIZE], char* key);
-
-void printHashTable(Parcel* table[HASH_TABLE_SIZE]); // for test !!!!
+void deleteHashTable(Parcel* table[], int tableSize);
+void printTotalParcelWgtAndValForCountry(Parcel* hashTable[], char* country);
+void printLigherParcelsInCountry(Parcel* table[], char* country,int wgt);
+void printHeavierParcelsInCountry(Parcel* table[], char* country, int wgt);
+void printCheapestAndMostExpensiveParcelInCountry(Parcel* table[], char* country);
 
 // functions to process user input
 void clearNewLineChar(char* string);
-
-int main(void) {
+bool validEnteredDestination(Parcel* hashTable[], char* country);
+int main(void) 
+{
     // variabales
     char parcelEntry[ENTRY_SIZE] = "";
     FILE* fPtr = NULL;
@@ -90,14 +98,34 @@ int main(void) {
         exit(EXIT_FAILURE);
     }
 
-    printHashTable(hashTable);// for test!!!
+    char country[] = "Japan";
+    int partitionWgt = 50000;
+    if (validEnteredDestination(hashTable, country))
+    {
+        // display the cheapest and the most expensive parcel
+        printCheapestAndMostExpensiveParcelInCountry(hashTable, country);
 
-    deleteHashTable(hashTable);
+        // display parcels lower / higher than a given weight. 
+        printLigherParcelsInCountry(hashTable, country, partitionWgt);
+        printHeavierParcelsInCountry(hashTable, country, partitionWgt);
 
+        // display the total weight and value of parcels for a given destination
+        printTotalParcelWgtAndValForCountry(hashTable, country);
+    }
+    else
+    {
+       printf("Destination Not Found!\n");
+    }
+
+    // free dynamically allocated memory
+    deleteHashTable(hashTable, HASH_TABLE_SIZE);
 
 
 	return 0;
 }
+
+
+
 /*
 * FUNCTION      : generateHash
 * DESCRIPTION   : this functoin converts a string to a hash value.
@@ -152,8 +180,12 @@ void deleteParcel(Parcel* toDel)
 
 void printParcel(Parcel* toPrint)
 {
-    printf("Destination:\t%10s\t Weight: %6d gms\t Value: $%8.2f\n", toPrint->Dest, toPrint->Weight, toPrint->Value);
+    if (toPrint != NULL)
+    {
+        printf("Destination:\t%10s\t Weight: %6d gms\t Value: $%8.2f\n", toPrint->Dest, toPrint->Weight, toPrint->Value);
+    }
 }
+
 Parcel* insertParcelToBST(Parcel* parent, Parcel* newParcel)
 {
 
@@ -180,23 +212,141 @@ Parcel* findMaxWeight(Parcel* root)
     return NULL;
 }
 
-/* find the minimum node within a binary tree and return a pointer to it. Parameter: a pointer to the root of the BST to search for
+/* find the minimum node within a binary tree and return a pointer to it. 
+* Parameter: a pointer to the root of the BST to search for
 */
 Parcel* findMinWeight(Parcel* root)
 {
     return NULL;
 }
-
-// ??? not defined
-Parcel* findCheapestParcel(Parcel* root)
+// return null if the tree is empty.
+// traverse all the node to find the cheapest one.
+Parcel* findCheapestParcel(Parcel* parent)
 {
-    return NULL;
+    Parcel* cheapest = parent;
+    Parcel* cheapestInLeft = NULL;
+    Parcel* cheapestInRight = NULL;
+
+    if (parent != NULL)
+    {
+        if (parent->Left == NULL && parent->Right == NULL)
+        { }
+        else if (parent->Left == NULL && parent->Right != NULL)
+        {
+            cheapestInRight = findCheapestParcel(parent->Right);
+            if (cheapest->Value > cheapestInRight->Value)
+            {
+                cheapest = cheapestInRight;
+            }
+        }
+        else if (parent->Left != NULL && parent->Right == NULL)
+        {
+            cheapestInLeft = findCheapestParcel(parent->Left);
+            if (cheapest->Value > cheapestInLeft->Value)
+            {
+                cheapest = cheapestInLeft;
+            }
+        }
+        else
+        {
+            cheapestInLeft = findCheapestParcel(parent->Left);
+            cheapestInRight = findCheapestParcel(parent->Right);
+            if (cheapestInLeft->Value < cheapestInRight->Value && 
+                cheapestInLeft->Value < parent->Value)
+            {
+                cheapest = cheapestInLeft;
+            }
+            if (cheapestInRight->Value < cheapestInLeft->Value &&
+                cheapestInRight->Value < parent->Value) 
+            {
+                cheapest = cheapestInRight;
+            }
+        }
+    }
+    return cheapest;
 }
 
-// ??? not defined
-Parcel* findMostExpensiveParcel(Parcel* root)
+// return null if the tree is empty.
+// traverse all the node to find the most expensive one.
+Parcel* findMostExpensiveParcel(Parcel* parent)
 {
-    return NULL;
+    Parcel* maxValue = parent;
+    Parcel* maxValueInLeft = NULL;
+    Parcel* maxValueInRight = NULL;
+
+    if (parent != NULL)
+    {
+        if (parent->Left == NULL && parent->Right == NULL)
+        { }
+        else if (parent->Left == NULL && parent->Right != NULL)
+        {
+            maxValueInRight = findMostExpensiveParcel(parent->Right);
+            if (maxValue->Value < maxValueInRight->Value)
+            {
+                maxValue = maxValueInRight;
+            }
+        }
+        else if (parent->Left != NULL && parent->Right == NULL)
+        {
+            maxValueInLeft = findMostExpensiveParcel(parent->Left);
+            if (maxValue->Value < maxValueInLeft->Value)
+            {
+                maxValue = maxValueInLeft;
+            }
+        }
+        else
+        {
+            maxValueInLeft = findMostExpensiveParcel(parent->Left);
+            maxValueInRight = findMostExpensiveParcel(parent->Right);
+            if (maxValueInLeft->Value > maxValueInRight->Value &&
+                maxValueInLeft->Value > parent->Value)
+            {
+                maxValue = maxValueInLeft;
+            }
+            if (maxValueInRight->Value > maxValueInLeft->Value &&
+                maxValueInRight->Value > parent->Value)
+            {
+                maxValue = maxValueInRight;
+            }
+        }
+    }
+    return maxValue;
+
+}
+
+
+void printSectionLowerThanWgt(Parcel* parent, int partition)
+{
+    if (parent != NULL)
+    {
+        if (parent->Weight < partition)
+        {
+            printBSTInOrder(parent->Left);
+            printParcel(parent);
+            printSectionLowerThanWgt(parent->Right, partition);
+        }
+        else
+        {
+            printSectionLowerThanWgt(parent->Left, partition);
+        }
+    }
+}
+
+void printSectionHigherThanWgt(Parcel* parent, int partition)
+{
+    if (parent != NULL)
+    {
+        if (parent->Weight > partition)
+        {
+            printSectionHigherThanWgt(parent->Left, partition);
+            printParcel(parent);
+            printBSTInOrder(parent->Right);
+        }
+        else
+        {
+            printSectionHigherThanWgt(parent->Right, partition);
+        }
+    }
 }
 
 void printBSTInOrder(Parcel* parent)
@@ -231,26 +381,92 @@ void insertHashTableWithBST(Parcel* table[], char* dest, int weight, float value
     Parcel* newParcel = createNewParcel(dest, weight, value);
     table[hash] = insertParcelToBST(table[hash], newParcel);
 }
-void deleteHashTable(Parcel* table[HASH_TABLE_SIZE])
+void deleteHashTable(Parcel* table[], int tableSize)
 {
-    for (int i = 0; i < HASH_TABLE_SIZE; ++i)
+    for (int i = 0; i < tableSize; ++i)
     {
         deleteBST(table[i]);
     }
 }
 
-// ??? not defined
-Parcel* searchHashTable(Parcel* table[HASH_TABLE_SIZE], char* key)
+int sumOfParcelsWgt(Parcel* parent)
 {
-    return NULL;
+    int sum = 0;
+    if (parent != NULL)
+    {
+        sum += parent->Weight;
+        sum += sumOfParcelsWgt(parent->Left);
+        sum += sumOfParcelsWgt(parent->Right);
+    }
+    return sum;
 }
 
-void printHashTable(Parcel* table[HASH_TABLE_SIZE])
+float sumOfParcelsVal(Parcel* parent)
 {
-    for (int i = 0; i < HASH_TABLE_SIZE; ++i)
+    float sum = 0;
+    if (parent!= NULL)
     {
-        printBSTInOrder(table[i]);
+        sum += parent->Value;
+        sum += sumOfParcelsVal(parent->Left);
+        sum += sumOfParcelsVal(parent->Right);
     }
+    return sum;
+}
+
+void printTotalParcelWgtAndValForCountry(Parcel* table[], char* country)
+{
+    int hash = generateHash(country);
+    printf("\nDestination:\t%10s\t Total Weight: %8d gms\t Total: $%10.2f\n", 
+        country, sumOfParcelsWgt(table[hash]), sumOfParcelsVal(table[hash]));
+}
+
+void printLigherParcelsInCountry(Parcel* table[], char* country, int wgt)
+{
+    int hash = generateHash(country);
+    printf("\n/====================== Lighter than %d gms ===================/\n\n", wgt);
+    /*
+    if (wgt <= findMinWeight(table[hash])->Weight) 
+    {
+        printf("Parcel not found\n");
+        return;
+    }
+    */
+    printSectionLowerThanWgt(table[hash], wgt);
+    
+}
+
+void printHeavierParcelsInCountry(Parcel* table[], char* country, int wgt)
+{
+    int hash = generateHash(country);
+    printf("\n/====================== Heavier than %d gms ==================/\n\n", wgt);
+    /*
+    if (wgt >= findMaxWeight(table[hash])->Weight)
+    {
+        printf("Parcel not found\n");
+        return;
+    }
+    */
+    printSectionHigherThanWgt(table[hash], wgt);
+    
+}
+
+//display the cheapest and the most expensive parcel.
+void printCheapestAndMostExpensiveParcelInCountry(Parcel* table[], char* country)
+{
+    int hash = generateHash(country);
+    printParcel(findCheapestParcel(table[hash]));
+    printParcel(findMostExpensiveParcel(table[hash]));
+}
+
+bool validEnteredDestination(Parcel* table[], char* country)
+{
+    bool retCode = true;
+    int hash = generateHash(country);
+    if (table[hash] == NULL || strcmp(country, table[hash]->Dest) != 0)
+    {
+        retCode = false;
+    }
+    return retCode;
 }
 
 /*
