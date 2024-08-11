@@ -71,7 +71,7 @@ int main(void)
     if (fPtr == NULL)
     {
         printf("**File Open ERROR\n");
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     while (fgets(parcelEntry, ENTRY_SIZE, fPtr) != NULL)
@@ -89,14 +89,14 @@ int main(void)
         if (ferror(fPtr))
         {
             printf("**File Reading ERROR\n");
-            return EXIT_FAILURE;
+            exit(EXIT_FAILURE);
         }
     }
 
     if (fclose(fPtr) != 0)
     {
         printf("**File Close ERROR\n");
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     //char country[] = "Japan";
@@ -157,7 +157,7 @@ int main(void)
             }
             else
             {
-                printf("Destination Not Found!\n");
+                printf("Not an Existing Destination!\n");
             }
             break;
 
@@ -165,25 +165,21 @@ int main(void)
             printf("Enter country name: ");
             fgets(userCountry, COUNTRY_SIZE, stdin);
             clearNewLineChar(userCountry);
+            if (!validEnteredDestination(hashTable, userCountry))
+            {
+                printf("Not an Existing Destination!\n");
+                break;
+            }
             printf("Enter weight: ");
             if (scanf_s("%d", &userWeight) != 1)
             {
-                printf("Invalid weight. Please enter an integer value.\n");
+                printf("Invalid weight. Please enter a weight.\n");
                 while (getchar() != '\n'); // Clear the input buffer
                 break;
             }
             while (getchar() != '\n'); // Clear the input buffer
-            if (validEnteredDestination(hashTable, userCountry))
-            {
-                printf("Parcels heavier than %d gms:\n", userWeight);
-                printHeavierParcelsInCountry(hashTable, userCountry, userWeight);
-                printf("Parcels lighter than %d gms:\n", userWeight);
-                printLigherParcelsInCountry(hashTable, userCountry, userWeight);
-            }
-            else
-            {
-                printf("Destination Not Found!\n");
-            }
+            printHeavierParcelsInCountry(hashTable, userCountry, userWeight);
+            printLigherParcelsInCountry(hashTable, userCountry, userWeight);
             break;
 
         case 3:
@@ -196,7 +192,7 @@ int main(void)
             }
             else
             {
-                printf("Destination Not Found!\n");
+                printf("Not an Existing Destination!\n");
             }
             break;
 
@@ -210,7 +206,7 @@ int main(void)
             }
             else
             {
-                printf("Destination Not Found!\n");
+                printf("Not an Existing Destination!\n");
             }
             break;
 
@@ -220,20 +216,19 @@ int main(void)
             clearNewLineChar(userCountry);
             if (validEnteredDestination(hashTable, userCountry))
             {
-                printf("Lightest parcel:\n");
+                printf("\nThe Lightest Parcel:\n");
                 printParcel(findMinWeight(hashTable[generateHash(userCountry)]));
-                printf("Heaviest parcel:\n");
+                printf("\nThe Heaviest Parcel:\n");
                 printParcel(findMaxWeight(hashTable[generateHash(userCountry)]));
             }
             else
             {
-                printf("Destination Not Found!\n");
+                printf("Not an Existing Destination!\n");
             }
             break;
 
         case 6:
-            deleteHashTable(hashTable, HASH_TABLE_SIZE);
-            printf("Bye\n");
+            printf("\nExiting...Bye\n");
             break;
 
         default:
@@ -245,8 +240,6 @@ int main(void)
 
     // free dynamically allocated memory
     deleteHashTable(hashTable, HASH_TABLE_SIZE);
-
-
 	return 0;
 }
 
@@ -588,7 +581,9 @@ void printHeavierParcelsInCountry(Parcel* table[], char* country, int wgt)
 void printCheapestAndMostExpensiveParcelInCountry(Parcel* table[], char* country)
 {
     int hash = generateHash(country);
+    printf("\nThe Cheapest Parcel:\n");
     printParcel(findCheapestParcel(table[hash]));
+    printf("\nThe Most Expensive Parcel:\n");
     printParcel(findMostExpensiveParcel(table[hash]));
 }
 
