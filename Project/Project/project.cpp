@@ -58,9 +58,10 @@ void printCheapestAndMostExpensiveParcelInCountry(Parcel* table[], char* country
 // functions to process user input
 void clearNewLineChar(char* string);
 bool validEnteredDestination(Parcel* hashTable[], char* country);
+
 int main(void) 
 {
-    // variabales
+    // variables
     char parcelEntry[ENTRY_SIZE] = "";
     FILE* fPtr = NULL;
     Parcel* hashTable[HASH_TABLE_SIZE] = { NULL };
@@ -70,7 +71,7 @@ int main(void)
     if (fPtr == NULL)
     {
         printf("**File Open ERROR\n");
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
     while (fgets(parcelEntry, ENTRY_SIZE, fPtr) != NULL)
@@ -88,14 +89,14 @@ int main(void)
         if (ferror(fPtr))
         {
             printf("**File Reading ERROR\n");
-            exit(EXIT_FAILURE);
+            return EXIT_FAILURE;
         }
     }
 
     if (fclose(fPtr) != 0)
     {
         printf("**File Close ERROR\n");
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
     //char country[] = "Japan";
@@ -120,9 +121,11 @@ int main(void)
     int choice = 0;
     char userCountry[COUNTRY_SIZE] = "";
     int userWeight = 0;
+    int validInput = 0;
 
-    while (1)
+    do
     {
+        // Display the menu
         printf("\nMenu:\n");
         printf("1. Enter country name and display all the parcels' details\n");
         printf("2. Enter country and weight pair to display parcels with weight higher/lower than entered weight\n");
@@ -131,9 +134,16 @@ int main(void)
         printf("5. Enter the country name and display lightest and heaviest parcel for the country\n");
         printf("6. Exit the application\n");
         printf("Enter your choice: ");
-        scanf_s("%d", &choice);
-        int ch;
-        ch = getchar();
+
+        // Check if the user input is an integer
+        validInput = scanf_s("%d", &choice);
+        while (getchar() != '\n'); // Clear the input buffer
+
+        if (validInput != 1)
+        {
+            printf("Invalid input. Please enter a number between 1 and 6.\n");
+            continue;
+        }
 
         switch (choice)
         {
@@ -156,8 +166,13 @@ int main(void)
             fgets(userCountry, COUNTRY_SIZE, stdin);
             clearNewLineChar(userCountry);
             printf("Enter weight: ");
-            scanf_s("%d", &userWeight);
-            ch = getchar();
+            if (scanf_s("%d", &userWeight) != 1)
+            {
+                printf("Invalid weight. Please enter an integer value.\n");
+                while (getchar() != '\n'); // Clear the input buffer
+                break;
+            }
+            while (getchar() != '\n'); // Clear the input buffer
             if (validEnteredDestination(hashTable, userCountry))
             {
                 printf("Parcels heavier than %d gms:\n", userWeight);
@@ -219,14 +234,14 @@ int main(void)
         case 6:
             deleteHashTable(hashTable, HASH_TABLE_SIZE);
             printf("Bye\n");
-            exit(EXIT_SUCCESS);
             break;
 
         default:
-            printf("Invalid choice, Please enter a number between 1 and 6!\n");
+            printf("Invalid choice. Please enter a number between 1 and 6.\n");
             break;
         }
-    }
+
+    } while (choice != 6);
 
     // free dynamically allocated memory
     deleteHashTable(hashTable, HASH_TABLE_SIZE);
