@@ -4,7 +4,9 @@
 * PROGRAMMER    : Zhizheng Dong
 * FIRST VERSION : 2024-08-06
 * DESCRIPTION	:
-*	This file loads ...
+*	This file loads data of parcels including a parcel's destination, weight and value from couriers.txt into 
+*   memory, then presents a user menu to the user to display relevant information of the parcels given the user's
+*   selection.
 */
 
 #pragma warning (disable : 4996)
@@ -17,7 +19,8 @@
 #define ENTRY_SIZE          50
 #define COUNTRY_SIZE        20
 
-typedef struct Parcel{
+typedef struct Parcel 
+{
     int Weight;
     float Value;
     char* Dest;
@@ -26,8 +29,6 @@ typedef struct Parcel{
 } Parcel;
 
 //prototypes
-
-
 // functions of Parcel
 Parcel* createNewParcel(char* newDest, int newWgt, float newVal);
 void deleteParcel(Parcel* toDel);
@@ -41,7 +42,6 @@ Parcel* findMostExpensiveParcel(Parcel* root);
 int sumOfParcelsWgt(Parcel* root);
 float sumOfParcelsVal(Parcel* root);
 void printBSTInOrder(Parcel* root);
-
 void printSectionLowerThanWgt(Parcel* root, int partitionWgt);
 void printSectionHigherThanWgt(Parcel* root, int partitionWgt);
 void deleteBST(Parcel* root);
@@ -51,7 +51,7 @@ int generateHash(char* str);
 void insertHashTableWithBST(Parcel* table[], char* dest, int weight, float value);
 void deleteHashTable(Parcel* table[], int tableSize);
 void printTotalParcelWgtAndValForCountry(Parcel* hashTable[], char* country);
-void printLigherParcelsInCountry(Parcel* table[], char* country,int wgt);
+void printLighterParcelsInCountry(Parcel* table[], char* country,int wgt);
 void printHeavierParcelsInCountry(Parcel* table[], char* country, int wgt);
 void printCheapestAndMostExpensiveParcelInCountry(Parcel* table[], char* country);
 
@@ -99,25 +99,7 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
-    //char country[] = "Japan";
-    //int partitionWgt = 50000;
-    //if (validEnteredDestination(hashTable, country))
-    //{
-    //    // display the cheapest and the most expensive parcel
-    //    printCheapestAndMostExpensiveParcelInCountry(hashTable, country);
-
-    //    // display parcels lower / higher than a given weight. 
-    //    printLigherParcelsInCountry(hashTable, country, partitionWgt);
-    //    printHeavierParcelsInCountry(hashTable, country, partitionWgt);
-
-    //    // display the total weight and value of parcels for a given destination
-    //    printTotalParcelWgtAndValForCountry(hashTable, country);
-    //}
-    //else
-    //{
-    //   printf("Destination Not Found!\n");
-    //}
-
+    // read the data through user menu 
     int choice = 0;
     char userCountry[COUNTRY_SIZE] = "";
     int userWeight = 0;
@@ -147,7 +129,7 @@ int main(void)
 
         switch (choice)
         {
-        case 1:
+        case 1: // display all the parcels' details
             printf("Enter country name: ");
             fgets(userCountry, COUNTRY_SIZE, stdin);
             clearNewLineChar(userCountry);
@@ -161,7 +143,7 @@ int main(void)
             }
             break;
 
-        case 2:
+        case 2: // display parcels with weight higher/lower than entered weight
             printf("Enter country name: ");
             fgets(userCountry, COUNTRY_SIZE, stdin);
             clearNewLineChar(userCountry);
@@ -179,10 +161,10 @@ int main(void)
             }
             while (getchar() != '\n'); // Clear the input buffer
             printHeavierParcelsInCountry(hashTable, userCountry, userWeight);
-            printLigherParcelsInCountry(hashTable, userCountry, userWeight);
+            printLighterParcelsInCountry(hashTable, userCountry, userWeight);
             break;
 
-        case 3:
+        case 3: // display the total parcel load and valuation for the country
             printf("Enter country name: ");
             fgets(userCountry, COUNTRY_SIZE, stdin);
             clearNewLineChar(userCountry);
@@ -196,7 +178,7 @@ int main(void)
             }
             break;
 
-        case 4:
+        case 4: // display cheapest and most expensive parcel
             printf("Enter country name: ");
             fgets(userCountry, COUNTRY_SIZE, stdin);
             clearNewLineChar(userCountry);
@@ -210,7 +192,7 @@ int main(void)
             }
             break;
 
-        case 5:
+        case 5: // display lightest and heaviest parcel for the country
             printf("Enter country name: ");
             fgets(userCountry, COUNTRY_SIZE, stdin);
             clearNewLineChar(userCountry);
@@ -267,8 +249,17 @@ int generateHash(char* str)
     hash = hash % HASH_TABLE_SIZE;
     return (int)hash;
 }
-
-
+/*
+* FUNCTION      : createNewParcel
+* DESCRIPTION   : this functoin creates a new Parcel node for trees.
+* PARAMETERS    : 
+*   char* newDest   :   the desetination for the new parcel.
+*   int   newWgt    :   the weight of the new parcel
+*   float newVal    :   the valuation of the new parcel
+* 
+* RETURNS       :
+*       Parcel*     : a pointer to the new struct Parcel containing the parcel's info.
+*/
 Parcel* createNewParcel(char* newDest, int newWgt, float newVal)
 {
     Parcel* newNode = (Parcel*)malloc(sizeof Parcel);
@@ -291,12 +282,29 @@ Parcel* createNewParcel(char* newDest, int newWgt, float newVal)
     return newNode;
 }
 
+
+/*
+* FUNCTION      : deleteParcel
+* DESCRIPTION   : 
+*   This functoin frees the dynamically allocated memory of a Parcel node.
+* PARAMETERS    :
+*   Parcel* toDel   :   a pointer to the parcel node to be deleted. 
+* RETURNS       :  void
+*/
 void deleteParcel(Parcel* toDel)
 {
     free(toDel->Dest);
     free(toDel);
 }
 
+/*
+* FUNCTION      : printParcel
+* DESCRIPTION   :
+*   This functoin prints out the information of a parcel, including its destination, weight and value, in one line.
+* PARAMETERS    :
+*   Parcel* toDel   :   a pointer to the parcel node to be printed out
+* RETURNS       :  void
+*/
 void printParcel(Parcel* toPrint)
 {
     if (toPrint != NULL)
@@ -539,7 +547,16 @@ float sumOfParcelsVal(Parcel* parent)
     }
     return sum;
 }
-
+/*
+* FUNCTION      : printTotalParcelWgtAndValForCountry
+* DESCRIPTION   :
+*   This functoin displays total weight and total value of parcels to a given destination (a country).
+*   within the hash table.
+* PARAMETERS    :
+*   Parcel* table[] :   a pointer to the hash table containing all parcels. 
+*   char* country   :   a string representing the destination country of parcels.
+* RETURNS       :  void
+*/
 void printTotalParcelWgtAndValForCountry(Parcel* table[], char* country)
 {
     int hash = generateHash(country);
@@ -547,7 +564,18 @@ void printTotalParcelWgtAndValForCountry(Parcel* table[], char* country)
         country, sumOfParcelsWgt(table[hash]), sumOfParcelsVal(table[hash]));
 }
 
-void printLigherParcelsInCountry(Parcel* table[], char* country, int wgt)
+/*
+* FUNCTION      : printLighterParcelsInCountry
+* DESCRIPTION   :
+*   This functoin displays parcels that are lighter than a given weight being delivered to a given country.
+*   within the hash table
+* PARAMETERS    :
+*   Parcel* table[] :   a pointer to the hash table containing all parcels. 
+*   char* country   :   a string representing the destination country of parcels.
+*   int     wgt     :   the partition weight of the parcel that all displayed parcels are lighter than.
+* RETURNS       :  void
+*/
+void printLighterParcelsInCountry(Parcel* table[], char* country, int wgt)
 {
     int hash = generateHash(country);
     printf("\n/====================== Lighter than %d gms ===================/\n\n", wgt);
@@ -562,6 +590,17 @@ void printLigherParcelsInCountry(Parcel* table[], char* country, int wgt)
     
 }
 
+/*
+* FUNCTION      : printHeavierParcelsInCountry
+* DESCRIPTION   :
+*   This functoin displays parcels that are heavier than a given weight being delivered to a given country 
+*   within the hash table. 
+* PARAMETERS    :
+*   Parcel* table[] :   a pointer to the hash table containing all parcels.
+*   char* country   :   a string representing the destination country of parcels.
+*   int     wgt     :   the partition weight of the parcel that all displayed parcels are heavier than.
+* RETURNS       :  void
+*/
 void printHeavierParcelsInCountry(Parcel* table[], char* country, int wgt)
 {
     int hash = generateHash(country);
@@ -573,11 +612,18 @@ void printHeavierParcelsInCountry(Parcel* table[], char* country, int wgt)
         return;
     }
     */
-    printSectionHigherThanWgt(table[hash], wgt);
-    
+    printSectionHigherThanWgt(table[hash], wgt);    
 }
 
-//display the cheapest and the most expensive parcel.
+/*
+* FUNCTION      : printHeavierParcelsInCountry
+* DESCRIPTION   :
+*   This functoin displays the cheapest and the most expensive parcels to a given destination within the hash table  
+* PARAMETERS    :
+*   Parcel* table[] :   a pointer to the hash table containing all parcels.
+*   char* country   :   a string representing the destination country of parcels.
+* RETURNS       :  void
+*/
 void printCheapestAndMostExpensiveParcelInCountry(Parcel* table[], char* country)
 {
     int hash = generateHash(country);
@@ -587,6 +633,17 @@ void printCheapestAndMostExpensiveParcelInCountry(Parcel* table[], char* country
     printParcel(findMostExpensiveParcel(table[hash]));
 }
 
+/*
+* FUNCTION      : validEnteredDestination
+* DESCRIPTION   :
+*   This functoin validates if an incoming country string exists in the hash table.
+* PARAMETERS    :
+*   Parcel* table[] :   a pointer to the hash table containing all parcels.
+*   char* country   :   a string representing the destination country of parcels.
+* RETURNS       :  
+*   bool    : true, if the given country exist in the hash table. otherwise,
+*             false.
+*/
 bool validEnteredDestination(Parcel* table[], char* country)
 {
     bool retCode = true;
