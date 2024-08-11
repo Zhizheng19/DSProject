@@ -204,20 +204,28 @@ Parcel* insertParcelToBST(Parcel* parent, Parcel* newParcel)
     return parent;
 }
 /*
-* find the maxium node within a binary tree and return a pointer to it. 
+* find and returns the node with the maximum weight in a Binary Search Tree by navigating to the rightmost node
 * Parameter: a pointer to the root of the BST to search for 
 */
 Parcel* findMaxWeight(Parcel* root)
 {
-    return NULL;
+    if (root == NULL || root->Right == NULL)
+    {
+        return root;
+    }
+    return findMaxWeight(root->Right);
 }
 
-/* find the minimum node within a binary tree and return a pointer to it. 
+/* find and returns the node with the minimum weight in a Binary Search Tree by navigating to the leftmost node
 * Parameter: a pointer to the root of the BST to search for
 */
 Parcel* findMinWeight(Parcel* root)
 {
-    return NULL;
+    if (root == NULL || root->Left == NULL)
+    {
+        return root;
+    }
+    return findMinWeight(root->Left);
 }
 // return null if the tree is empty.
 // traverse all the node to find the cheapest one.

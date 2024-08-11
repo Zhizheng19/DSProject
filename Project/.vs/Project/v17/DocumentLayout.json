@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\GitRepo\\AssignmentsRepo\\DSProject\\Project\\",
+  "WorkspaceRootPath": "C:\\Users\\shivm\\OneDrive - Conestoga College\\Desktop\\Data Structures\\DSProject\\Project\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3CF2A30F-6267-49B1-9972-DBD33F40D995}|Project\\Project.vcxproj|E:\\GitRepo\\AssignmentsRepo\\DSProject\\Project\\Project\\project.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3CF2A30F-6267-49B1-9972-DBD33F40D995}|Project\\Project.vcxproj|C:\\Users\\shivm\\OneDrive - Conestoga College\\Desktop\\Data Structures\\DSProject\\Project\\Project\\project.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3CF2A30F-6267-49B1-9972-DBD33F40D995}|Project\\Project.vcxproj|solutionrelative:Project\\project.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -28,11 +28,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "project.cpp",
-              "DocumentMoniker": "E:\\GitRepo\\AssignmentsRepo\\DSProject\\Project\\Project\\project.cpp",
+              "DocumentMoniker": "C:\\Users\\shivm\\OneDrive - Conestoga College\\Desktop\\Data Structures\\DSProject\\Project\\Project\\project.cpp",
               "RelativeDocumentMoniker": "Project\\project.cpp",
-              "ToolTip": "E:\\GitRepo\\AssignmentsRepo\\DSProject\\Project\\Project\\project.cpp",
+              "ToolTip": "C:\\Users\\shivm\\OneDrive - Conestoga College\\Desktop\\Data Structures\\DSProject\\Project\\Project\\project.cpp",
               "RelativeToolTip": "Project\\project.cpp",
-              "ViewState": "AQIAALABAAAAAAAAAAAAANUBAAABAAAA",
+              "ViewState": "AQIAANUAAAAAAAAAAADgv98AAAArAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-08-06T04:07:15.517Z",
               "EditorCaption": ""
