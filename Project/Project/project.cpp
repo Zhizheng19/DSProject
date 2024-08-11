@@ -61,7 +61,6 @@ bool validEnteredDestination(Parcel* hashTable[], char* country);
 
 int main(void) 
 {
-    // variabales
     // variables
     char parcelEntry[ENTRY_SIZE] = "";
     FILE* fPtr = NULL;
@@ -72,6 +71,7 @@ int main(void)
     if (fPtr == NULL)
     {
         printf("**File Open ERROR\n");
+        return EXIT_FAILURE;
     }
 
     while (fgets(parcelEntry, ENTRY_SIZE, fPtr) != NULL)
@@ -89,17 +89,16 @@ int main(void)
         if (ferror(fPtr))
         {
             printf("**File Reading ERROR\n");
+            return EXIT_FAILURE;
         }
     }
 
     if (fclose(fPtr) != 0)
     {
         printf("**File Close ERROR\n");
+        return EXIT_FAILURE;
     }
 
-    char country[] = "Japan";
-    int partitionWgt = 50000;
-    if (validEnteredDestination(hashTable, country))
     //char country[] = "Japan";
     //int partitionWgt = 50000;
     //if (validEnteredDestination(hashTable, country))
@@ -126,8 +125,6 @@ int main(void)
 
     do
     {
-        // display the cheapest and the most expensive parcel
-        printCheapestAndMostExpensiveParcelInCountry(hashTable, country);
         // Display the menu
         printf("\nMenu:\n");
         printf("1. Enter country name and display all the parcels' details\n");
@@ -148,9 +145,6 @@ int main(void)
             continue;
         }
 
-        // display parcels lower / higher than a given weight. 
-        printLigherParcelsInCountry(hashTable, country, partitionWgt);
-        printHeavierParcelsInCountry(hashTable, country, partitionWgt);
         switch (choice)
         {
         case 1:
@@ -192,13 +186,6 @@ int main(void)
             }
             break;
 
-        // display the total weight and value of parcels for a given destination
-        printTotalParcelWgtAndValForCountry(hashTable, country);
-    }
-    else
-    {
-       printf("Destination Not Found!\n");
-    }
         case 3:
             printf("Enter country name: ");
             fgets(userCountry, COUNTRY_SIZE, stdin);
@@ -343,13 +330,11 @@ Parcel* insertParcelToBST(Parcel* parent, Parcel* newParcel)
     return parent;
 }
 /*
-* find the maxium node within a binary tree and return a pointer to it. 
 * find and returns the node with the maximum weight in a Binary Search Tree by navigating to the rightmost node
 * Parameter: a pointer to the root of the BST to search for 
 */
 Parcel* findMaxWeight(Parcel* root)
 {
-    return NULL;
     if (root == NULL || root->Right == NULL)
     {
         return root;
@@ -357,13 +342,11 @@ Parcel* findMaxWeight(Parcel* root)
     return findMaxWeight(root->Right);
 }
 
-/* find the minimum node within a binary tree and return a pointer to it. 
 /* find and returns the node with the minimum weight in a Binary Search Tree by navigating to the leftmost node
 * Parameter: a pointer to the root of the BST to search for
 */
 Parcel* findMinWeight(Parcel* root)
 {
-    return NULL;
     if (root == NULL || root->Left == NULL)
     {
         return root;
