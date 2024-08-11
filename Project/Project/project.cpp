@@ -18,6 +18,7 @@
 #define COUNTRY_SIZE        20
 
 typedef struct Parcel{
+typedef struct Parcel {
     int Weight;
     float Value;
     char* Dest;
@@ -36,6 +37,8 @@ void printParcel(Parcel* toPrint);
 Parcel* insertParcelToBST(Parcel* root, Parcel* newParcel);
 Parcel* findMaxWeight(Parcel* root); 
 Parcel* findMinWeight(Parcel* root); 
+Parcel* findMaxWeight(Parcel* root);
+Parcel* findMinWeight(Parcel* root);
 Parcel* findCheapestParcel(Parcel* root);
 Parcel* findMostExpensiveParcel(Parcel* root);
 int sumOfParcelsWgt(Parcel* root);
@@ -52,6 +55,7 @@ void insertHashTableWithBST(Parcel* table[], char* dest, int weight, float value
 void deleteHashTable(Parcel* table[], int tableSize);
 void printTotalParcelWgtAndValForCountry(Parcel* hashTable[], char* country);
 void printLigherParcelsInCountry(Parcel* table[], char* country,int wgt);
+void printLigherParcelsInCountry(Parcel* table[], char* country, int wgt);
 void printHeavierParcelsInCountry(Parcel* table[], char* country, int wgt);
 void printCheapestAndMostExpensiveParcelInCountry(Parcel* table[], char* country);
 
@@ -59,6 +63,7 @@ void printCheapestAndMostExpensiveParcelInCountry(Parcel* table[], char* country
 void clearNewLineChar(char* string);
 bool validEnteredDestination(Parcel* hashTable[], char* country);
 int main(void) 
+int main(void)
 {
     // variabales
     char parcelEntry[ENTRY_SIZE] = "";
@@ -78,8 +83,10 @@ int main(void)
         char country[COUNTRY_SIZE] = "";
         int weight = 0;
         float price = 0.0f;        
+        float price = 0.0f;
         // parse an parcel entry and load it into the Parcel node
         sscanf_s(parcelEntry,"%[^,0-9], %d, %f", country, COUNTRY_SIZE, &weight, &price);
+        sscanf_s(parcelEntry, "%[^,0-9], %d, %f", country, COUNTRY_SIZE, &weight, &price);
         // insert to the BST inside the hash table
         insertHashTableWithBST(hashTable, country, weight, price);
     }
@@ -101,13 +108,97 @@ int main(void)
     char country[] = "Japan";
     int partitionWgt = 50000;
     if (validEnteredDestination(hashTable, country))
+    //char country[] = "Japan";
+    //int partitionWgt = 50000;
+    //if (validEnteredDestination(hashTable, country))
+    //{
+    //    // display the cheapest and the most expensive parcel
+    //    printCheapestAndMostExpensiveParcelInCountry(hashTable, country);
+
+    //    // display parcels lower / higher than a given weight. 
+    //    printLigherParcelsInCountry(hashTable, country, partitionWgt);
+    //    printHeavierParcelsInCountry(hashTable, country, partitionWgt);
+
+    //    // display the total weight and value of parcels for a given destination
+    //    printTotalParcelWgtAndValForCountry(hashTable, country);
+    //}
+    //else
+    //{
+    //   printf("Destination Not Found!\n");
+    //}
+
+    int choice = 0;
+    char userCountry[COUNTRY_SIZE] = "";
+    int userWeight = 0;
+
+    while (1)
     {
         // display the cheapest and the most expensive parcel
         printCheapestAndMostExpensiveParcelInCountry(hashTable, country);
+        printf("\nMenu:\n");
+        printf("1. Enter country name and display all the parcels' details\n");
+        printf("2. Enter country and weight pair to display parcels with weight higher/lower than entered weight\n");
+        printf("3. Display the total parcel load and valuation for the country\n");
+        printf("4. Enter the country name and display cheapest and most expensive parcel's details\n");
+        printf("5. Enter the country name and display lightest and heaviest parcel for the country\n");
+        printf("6. Exit the application\n");
+        printf("Enter your choice: ");
+        scanf_s("%d", &choice);
+        int ch;
+        ch = getchar();
+
+        switch (choice)
+        {
+        case 1:
+            printf("Enter country name: ");
+            fgets(userCountry, COUNTRY_SIZE, stdin);
+            clearNewLineChar(userCountry);
+            if (validEnteredDestination(hashTable, userCountry))
+            {
+                printBSTInOrder(hashTable[generateHash(userCountry)]);
+            }
+            else
+            {
+                printf("Destination Not Found!\n");
+            }
+            break;
+
+        case 2:
+            printf("Enter country name: ");
+            fgets(userCountry, COUNTRY_SIZE, stdin);
+            clearNewLineChar(userCountry);
+            printf("Enter weight: ");
+            scanf_s("%d", &userWeight);
+            ch = getchar();
+            if (validEnteredDestination(hashTable, userCountry))
+            {
+                printf("Parcels heavier than %d gms:\n", userWeight);
+                printHeavierParcelsInCountry(hashTable, userCountry, userWeight);
+                printf("Parcels lighter than %d gms:\n", userWeight);
+                printLigherParcelsInCountry(hashTable, userCountry, userWeight);
+            }
+            else
+            {
+                printf("Destination Not Found!\n");
+            }
+            break;
 
         // display parcels lower / higher than a given weight. 
         printLigherParcelsInCountry(hashTable, country, partitionWgt);
         printHeavierParcelsInCountry(hashTable, country, partitionWgt);
+        case 3:
+            printf("Enter country name: ");
+            fgets(userCountry, COUNTRY_SIZE, stdin);
+            clearNewLineChar(userCountry);
+            if (validEnteredDestination(hashTable, userCountry))
+            {
+                printTotalParcelWgtAndValForCountry(hashTable, userCountry);
+            }
+            else
+            {
+                printf("Destination Not Found!\n");
+            }
+            break;
 
         // display the total weight and value of parcels for a given destination
         printTotalParcelWgtAndValForCountry(hashTable, country);
@@ -115,6 +206,47 @@ int main(void)
     else
     {
        printf("Destination Not Found!\n");
+        case 4:
+            printf("Enter country name: ");
+            fgets(userCountry, COUNTRY_SIZE, stdin);
+            clearNewLineChar(userCountry);
+            if (validEnteredDestination(hashTable, userCountry))
+            {
+                printCheapestAndMostExpensiveParcelInCountry(hashTable, userCountry);
+            }
+            else
+            {
+                printf("Destination Not Found!\n");
+            }
+            break;
+
+        case 5:
+            printf("Enter country name: ");
+            fgets(userCountry, COUNTRY_SIZE, stdin);
+            clearNewLineChar(userCountry);
+            if (validEnteredDestination(hashTable, userCountry))
+            {
+                printf("Lightest parcel:\n");
+                printParcel(findMinWeight(hashTable[generateHash(userCountry)]));
+                printf("Heaviest parcel:\n");
+                printParcel(findMaxWeight(hashTable[generateHash(userCountry)]));
+            }
+            else
+            {
+                printf("Destination Not Found!\n");
+            }
+            break;
+
+        case 6:
+            deleteHashTable(hashTable, HASH_TABLE_SIZE);
+            printf("Bye\n");
+            exit(EXIT_SUCCESS);
+            break;
+
+        default:
+            printf("Invalid choice, Please enter a number between 1 and 6!\n");
+            break;
+        }
     }
 
     // free dynamically allocated memory
@@ -122,6 +254,7 @@ int main(void)
 
 
 	return 0;
+    return 0;
 }
 
 
@@ -159,12 +292,14 @@ Parcel* createNewParcel(char* newDest, int newWgt, float newVal)
         exit(EXIT_FAILURE);
     }
     newNode->Dest = (char*)malloc(strlen(newDest)+1);
+    newNode->Dest = (char*)malloc(strlen(newDest) + 1);
     if (newNode->Dest == NULL)
     {
         printf("**ERROR: Out of Memory!\n");
         exit(EXIT_FAILURE);
     }
     strcpy_s(newNode->Dest, strlen(newDest)+1, newDest);
+    strcpy_s(newNode->Dest, strlen(newDest) + 1, newDest);
     newNode->Value = newVal;
     newNode->Weight = newWgt;
     newNode->Left = NULL;
@@ -196,28 +331,43 @@ Parcel* insertParcelToBST(Parcel* parent, Parcel* newParcel)
     else if (newParcel->Weight > parent->Weight)
     {
        parent->Right = insertParcelToBST(parent->Right, newParcel);
+        parent->Right = insertParcelToBST(parent->Right, newParcel);
     }
     else if (newParcel->Weight < parent->Weight)
     {
        parent->Left = insertParcelToBST(parent->Left, newParcel);
+        parent->Left = insertParcelToBST(parent->Left, newParcel);
     }
     return parent;
 }
 /*
 * find the maxium node within a binary tree and return a pointer to it. 
 * Parameter: a pointer to the root of the BST to search for 
+* find and returns the node with the maximum weight in a Binary Search Tree by navigating to the rightmost node
+* Parameter: a pointer to the root of the BST to search for
 */
 Parcel* findMaxWeight(Parcel* root)
 {
     return NULL;
+    if (root == NULL || root->Right == NULL)
+    {
+        return root;
+    }
+    return findMaxWeight(root->Right);
 }
 
 /* find the minimum node within a binary tree and return a pointer to it. 
+/* find and returns the node with the minimum weight in a Binary Search Tree by navigating to the leftmost node
 * Parameter: a pointer to the root of the BST to search for
 */
 Parcel* findMinWeight(Parcel* root)
 {
     return NULL;
+    if (root == NULL || root->Left == NULL)
+    {
+        return root;
+    }
+    return findMinWeight(root->Left);
 }
 // return null if the tree is empty.
 // traverse all the node to find the cheapest one.
@@ -231,6 +381,8 @@ Parcel* findCheapestParcel(Parcel* parent)
     {
         if (parent->Left == NULL && parent->Right == NULL)
         { }
+        {
+        }
         else if (parent->Left == NULL && parent->Right != NULL)
         {
             cheapestInRight = findCheapestParcel(parent->Right);
@@ -252,12 +404,14 @@ Parcel* findCheapestParcel(Parcel* parent)
             cheapestInLeft = findCheapestParcel(parent->Left);
             cheapestInRight = findCheapestParcel(parent->Right);
             if (cheapestInLeft->Value < cheapestInRight->Value && 
+            if (cheapestInLeft->Value < cheapestInRight->Value &&
                 cheapestInLeft->Value < parent->Value)
             {
                 cheapest = cheapestInLeft;
             }
             if (cheapestInRight->Value < cheapestInLeft->Value &&
                 cheapestInRight->Value < parent->Value) 
+                cheapestInRight->Value < parent->Value)
             {
                 cheapest = cheapestInRight;
             }
@@ -278,6 +432,8 @@ Parcel* findMostExpensiveParcel(Parcel* parent)
     {
         if (parent->Left == NULL && parent->Right == NULL)
         { }
+        {
+        }
         else if (parent->Left == NULL && parent->Right != NULL)
         {
             maxValueInRight = findMostExpensiveParcel(parent->Right);
@@ -405,6 +561,7 @@ float sumOfParcelsVal(Parcel* parent)
 {
     float sum = 0;
     if (parent!= NULL)
+    if (parent != NULL)
     {
         sum += parent->Value;
         sum += sumOfParcelsVal(parent->Left);
@@ -417,6 +574,7 @@ void printTotalParcelWgtAndValForCountry(Parcel* table[], char* country)
 {
     int hash = generateHash(country);
     printf("\nDestination:\t%10s\t Total Weight: %8d gms\t Total: $%10.2f\n", 
+    printf("\nDestination:\t%10s\t Total Weight: %8d gms\t Total: $%10.2f\n",
         country, sumOfParcelsWgt(table[hash]), sumOfParcelsVal(table[hash]));
 }
 
@@ -426,6 +584,7 @@ void printLigherParcelsInCountry(Parcel* table[], char* country, int wgt)
     printf("\n/====================== Lighter than %d gms ===================/\n\n", wgt);
     /*
     if (wgt <= findMinWeight(table[hash])->Weight) 
+    if (wgt <= findMinWeight(table[hash])->Weight)
     {
         printf("Parcel not found\n");
         return;
@@ -433,6 +592,7 @@ void printLigherParcelsInCountry(Parcel* table[], char* country, int wgt)
     */
     printSectionLowerThanWgt(table[hash], wgt);
     
+
 }
 
 void printHeavierParcelsInCountry(Parcel* table[], char* country, int wgt)
@@ -448,6 +608,7 @@ void printHeavierParcelsInCountry(Parcel* table[], char* country, int wgt)
     */
     printSectionHigherThanWgt(table[hash], wgt);
     
+
 }
 
 //display the cheapest and the most expensive parcel.
