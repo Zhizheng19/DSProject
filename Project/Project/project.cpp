@@ -98,23 +98,134 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
-    char country[] = "Japan";
-    int partitionWgt = 50000;
-    if (validEnteredDestination(hashTable, country))
-    {
-        // display the cheapest and the most expensive parcel
-        printCheapestAndMostExpensiveParcelInCountry(hashTable, country);
+    //char country[] = "Japan";
+    //int partitionWgt = 50000;
+    //if (validEnteredDestination(hashTable, country))
+    //{
+    //    // display the cheapest and the most expensive parcel
+    //    printCheapestAndMostExpensiveParcelInCountry(hashTable, country);
 
-        // display parcels lower / higher than a given weight. 
-        printLigherParcelsInCountry(hashTable, country, partitionWgt);
-        printHeavierParcelsInCountry(hashTable, country, partitionWgt);
+    //    // display parcels lower / higher than a given weight. 
+    //    printLigherParcelsInCountry(hashTable, country, partitionWgt);
+    //    printHeavierParcelsInCountry(hashTable, country, partitionWgt);
 
-        // display the total weight and value of parcels for a given destination
-        printTotalParcelWgtAndValForCountry(hashTable, country);
-    }
-    else
+    //    // display the total weight and value of parcels for a given destination
+    //    printTotalParcelWgtAndValForCountry(hashTable, country);
+    //}
+    //else
+    //{
+    //   printf("Destination Not Found!\n");
+    //}
+
+    int choice = 0;
+    char userCountry[COUNTRY_SIZE] = "";
+    int userWeight = 0;
+
+    while (1)
     {
-       printf("Destination Not Found!\n");
+        printf("\nMenu:\n");
+        printf("1. Enter country name and display all the parcels' details\n");
+        printf("2. Enter country and weight pair to display parcels with weight higher/lower than entered weight\n");
+        printf("3. Display the total parcel load and valuation for the country\n");
+        printf("4. Enter the country name and display cheapest and most expensive parcel's details\n");
+        printf("5. Enter the country name and display lightest and heaviest parcel for the country\n");
+        printf("6. Exit the application\n");
+        printf("Enter your choice: ");
+        scanf_s("%d", &choice);
+        int ch;
+        ch = getchar();
+
+        switch (choice)
+        {
+        case 1:
+            printf("Enter country name: ");
+            fgets(userCountry, COUNTRY_SIZE, stdin);
+            clearNewLineChar(userCountry);
+            if (validEnteredDestination(hashTable, userCountry))
+            {
+                printBSTInOrder(hashTable[generateHash(userCountry)]);
+            }
+            else
+            {
+                printf("Destination Not Found!\n");
+            }
+            break;
+
+        case 2:
+            printf("Enter country name: ");
+            fgets(userCountry, COUNTRY_SIZE, stdin);
+            clearNewLineChar(userCountry);
+            printf("Enter weight: ");
+            scanf_s("%d", &userWeight);
+            ch = getchar();
+            if (validEnteredDestination(hashTable, userCountry))
+            {
+                printf("Parcels heavier than %d gms:\n", userWeight);
+                printHeavierParcelsInCountry(hashTable, userCountry, userWeight);
+                printf("Parcels lighter than %d gms:\n", userWeight);
+                printLigherParcelsInCountry(hashTable, userCountry, userWeight);
+            }
+            else
+            {
+                printf("Destination Not Found!\n");
+            }
+            break;
+
+        case 3:
+            printf("Enter country name: ");
+            fgets(userCountry, COUNTRY_SIZE, stdin);
+            clearNewLineChar(userCountry);
+            if (validEnteredDestination(hashTable, userCountry))
+            {
+                printTotalParcelWgtAndValForCountry(hashTable, userCountry);
+            }
+            else
+            {
+                printf("Destination Not Found!\n");
+            }
+            break;
+
+        case 4:
+            printf("Enter country name: ");
+            fgets(userCountry, COUNTRY_SIZE, stdin);
+            clearNewLineChar(userCountry);
+            if (validEnteredDestination(hashTable, userCountry))
+            {
+                printCheapestAndMostExpensiveParcelInCountry(hashTable, userCountry);
+            }
+            else
+            {
+                printf("Destination Not Found!\n");
+            }
+            break;
+
+        case 5:
+            printf("Enter country name: ");
+            fgets(userCountry, COUNTRY_SIZE, stdin);
+            clearNewLineChar(userCountry);
+            if (validEnteredDestination(hashTable, userCountry))
+            {
+                printf("Lightest parcel:\n");
+                printParcel(findMinWeight(hashTable[generateHash(userCountry)]));
+                printf("Heaviest parcel:\n");
+                printParcel(findMaxWeight(hashTable[generateHash(userCountry)]));
+            }
+            else
+            {
+                printf("Destination Not Found!\n");
+            }
+            break;
+
+        case 6:
+            deleteHashTable(hashTable, HASH_TABLE_SIZE);
+            printf("Bye\n");
+            exit(EXIT_SUCCESS);
+            break;
+
+        default:
+            printf("Invalid choice, Please enter a number between 1 and 6!\n");
+            break;
+        }
     }
 
     // free dynamically allocated memory
