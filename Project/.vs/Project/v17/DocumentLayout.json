@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\GitRepo\\AssignmentsRepo\\DSProject\\Project\\",
+  "WorkspaceRootPath": "C:\\Users\\shivm\\OneDrive - Conestoga College\\Desktop\\Data Structures\\DSProject\\Project\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3CF2A30F-6267-49B1-9972-DBD33F40D995}|Project\\Project.vcxproj|E:\\GitRepo\\AssignmentsRepo\\DSProject\\Project\\Project\\project.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{3CF2A30F-6267-49B1-9972-DBD33F40D995}|Project\\Project.vcxproj|C:\\Users\\shivm\\OneDrive - Conestoga College\\Desktop\\Data Structures\\DSProject\\Project\\Project\\project.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3CF2A30F-6267-49B1-9972-DBD33F40D995}|Project\\Project.vcxproj|solutionrelative:Project\\project.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -28,13 +28,23 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "project.cpp",
-              "DocumentMoniker": "E:\\GitRepo\\AssignmentsRepo\\DSProject\\Project\\Project\\project.cpp",
+              "DocumentMoniker": "C:\\Users\\shivm\\OneDrive - Conestoga College\\Desktop\\Data Structures\\DSProject\\Project\\Project\\project.cpp",
               "RelativeDocumentMoniker": "Project\\project.cpp",
-              "ToolTip": "E:\\GitRepo\\AssignmentsRepo\\DSProject\\Project\\Project\\project.cpp",
+<<<<<<< HEAD
+              "ToolTip": "E:\\GitRepo\\AssignmentsRepo\\DSProject\\Project\\Project\\project.cpp*",
+              "RelativeToolTip": "Project\\project.cpp*",
+              "ViewState": "AQIAAOMAAAAAAAAAAAAAAOUBAAAAAAAA",
+=======
+              "ToolTip": "C:\\Users\\shivm\\OneDrive - Conestoga College\\Desktop\\Data Structures\\DSProject\\Project\\Project\\project.cpp",
               "RelativeToolTip": "Project\\project.cpp",
-              "ViewState": "AQIAAEoBAAAAAAAAAAAAAFEBAAAUAAAA",
+<<<<<<< HEAD
+              "ViewState": "AQIAADgAAAAAAAAAAAAUwEEAAAAWAAAA",
+>>>>>>> 00b7f05be8cf5efa4ff9aefcdaeb5cec172dc81f
+=======
+              "ViewState": "AQIAAC0CAAAAAAAAAAAAADICAAApAAAA",
+>>>>>>> b66900bc47c1bcd67897cd6aab3d4293b8dff3dd
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-08-13T01:47:40.531Z",
+              "WhenOpened": "2024-08-06T04:07:15.517Z",
               "EditorCaption": ""
             }
           ]

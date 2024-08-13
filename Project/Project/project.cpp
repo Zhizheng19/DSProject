@@ -312,7 +312,13 @@ void printParcel(Parcel* toPrint)
         printf("Destination:\t%10s\t Weight: %6d gms\t Value: $%8.2f\n", toPrint->Dest, toPrint->Weight, toPrint->Value);
     }
 }
-
+/*
+* FUNCTION      : insertParcelToBST
+* DESCRIPTION   : Inserts a new parcel into a Binary Search Tree
+* PARAMETERS    : Parcel* root - The root of the BST
+*                 Parcel* newParcel - The parcel to be inserted
+* RETURNS       : returns pointer to the parcel, this parcel is inserted into the binary search tree
+*/
 Parcel* insertParcelToBST(Parcel* parent, Parcel* newParcel)
 {
 
@@ -330,7 +336,13 @@ Parcel* insertParcelToBST(Parcel* parent, Parcel* newParcel)
     }
     return parent;
 }
-
+/*
+* FUNCTION      : findMaxWeight
+* DESCRIPTION   : Finds and returns the maximum weight in a Binary Search Tree
+* PARAMETERS    : Parcel* root - searching from the root of BST
+*
+* RETURNS       : returns pointer to the parcel, this parcel is the maximum weight
+*/
 Parcel* findMaxWeight(Parcel* root)
 {
     if (root == NULL || root->Right == NULL)
@@ -339,8 +351,13 @@ Parcel* findMaxWeight(Parcel* root)
     }
     return findMaxWeight(root->Right);
 }
-
-
+/*
+* FUNCTION      : findMinWeight
+* DESCRIPTION   : Finds and returns the minimum weight in a Binary Search Tree
+* PARAMETERS    : Parcel* root - searching from the root of BST
+*
+* RETURNS       : returns pointer to the parcel, this parcel is the minimum weight
+*/
 Parcel* findMinWeight(Parcel* root)
 {
     if (root == NULL || root->Left == NULL)
@@ -350,6 +367,13 @@ Parcel* findMinWeight(Parcel* root)
     return findMinWeight(root->Left);
 }
 
+/*
+* FUNCTION      : findCheapestParcel
+* DESCRIPTION   : Finds and returns the cheapest parcel in a Binary Search Tree
+* PARAMETERS    : Parcel* parent - searching from the root of BST
+*
+* RETURNS       : returns a pointer to the parcel, this parcel is the cheapest parcel in the BST
+*/
 Parcel* findCheapestParcel(Parcel* parent)
 {
     Parcel* cheapest = parent;
@@ -395,6 +419,13 @@ Parcel* findCheapestParcel(Parcel* parent)
     return cheapest;
 }
 
+/*
+* FUNCTION      : findMostExpensiveParcel
+* DESCRIPTION   : Finds and returns the most expensive parcel in a Binary Search Tree
+* PARAMETERS    : Parcel* parent - searching from the root of BST
+*
+* RETURNS       : returns a pointer to the parcel, this parcel is the expensive parcel in the BST
+*/
 Parcel* findMostExpensiveParcel(Parcel* parent)
 {
     Parcel* maxValue = parent;
@@ -571,7 +602,12 @@ void deleteHashTable(Parcel* table[], int tableSize)
         deleteBST(table[i]);
     }
 }
-
+/*
+* FUNCTION      : sumOfParcelsWgt
+* DESCRIPTION   : Calculates the total weight of all parcels in a (BST)
+* PARAMETERS    : Parcel* parent - A pointer to the root of the BST to calculate the total weight
+* RETURNS       : int - The total weight of all parcels in the BST
+*/
 int sumOfParcelsWgt(Parcel* parent)
 {
     int sum = 0;
@@ -583,7 +619,12 @@ int sumOfParcelsWgt(Parcel* parent)
     }
     return sum;
 }
-
+/*
+* FUNCTION      : sumOfParcelsVal
+* DESCRIPTION   : Calculates the total value of all parcels in a BST
+* PARAMETERS    : Parcel* parent - A pointer to the root of the BST to calculate the total value
+* RETURNS       : float - The total value of all parcels in the BST
+*/
 float sumOfParcelsVal(Parcel* parent)
 {
     float sum = 0;
@@ -692,7 +733,7 @@ bool validEnteredDestination(Parcel* table[], char* country)
 /*
 * FUNCTION		: clearNewLineChar
 * DESCRIPTION	: This function deletes the new line character at the end of a string.
-* PARAMETERS	: char newString[] £ºa taget string.
+* PARAMETERS	: char newString[] ï¿½ï¿½a taget string.
 * RETURNS		: Null.
 */
 void clearNewLineChar(char* string)
