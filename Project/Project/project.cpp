@@ -330,10 +330,7 @@ Parcel* insertParcelToBST(Parcel* parent, Parcel* newParcel)
     }
     return parent;
 }
-/*
-* find and returns the node with the maximum weight in a Binary Search Tree by navigating to the rightmost node
-* Parameter: a pointer to the root of the BST to search for 
-*/
+
 Parcel* findMaxWeight(Parcel* root)
 {
     if (root == NULL || root->Right == NULL)
@@ -343,9 +340,7 @@ Parcel* findMaxWeight(Parcel* root)
     return findMaxWeight(root->Right);
 }
 
-/* find and returns the node with the minimum weight in a Binary Search Tree by navigating to the leftmost node
-* Parameter: a pointer to the root of the BST to search for
-*/
+
 Parcel* findMinWeight(Parcel* root)
 {
     if (root == NULL || root->Left == NULL)
@@ -354,8 +349,7 @@ Parcel* findMinWeight(Parcel* root)
     }
     return findMinWeight(root->Left);
 }
-// return null if the tree is empty.
-// traverse all the node to find the cheapest one.
+
 Parcel* findCheapestParcel(Parcel* parent)
 {
     Parcel* cheapest = parent;
@@ -401,8 +395,6 @@ Parcel* findCheapestParcel(Parcel* parent)
     return cheapest;
 }
 
-// return null if the tree is empty.
-// traverse all the node to find the most expensive one.
 Parcel* findMostExpensiveParcel(Parcel* parent)
 {
     Parcel* maxValue = parent;
@@ -449,7 +441,15 @@ Parcel* findMostExpensiveParcel(Parcel* parent)
 
 }
 
-
+/*
+* FUNCTION      : printSectionLowerThanWgt
+* DESCRIPTION   :
+*   This functoin prints out all the parcels lighter than a given weight within a BST.
+* PARAMETERS    :
+*   Parcel* parent  :   the root node of BSTs to display parcels.
+*   int partition   :   the weight partitions parcels in the bst to be displayed.
+* RETURNS       :  void
+*/
 void printSectionLowerThanWgt(Parcel* parent, int partition)
 {
     if (parent != NULL)
@@ -467,6 +467,15 @@ void printSectionLowerThanWgt(Parcel* parent, int partition)
     }
 }
 
+/*
+* FUNCTION      : printSectionHigherThanWgt
+* DESCRIPTION   :
+*   This functoin prints out all the parcels heavier than a given weight within a BST.
+* PARAMETERS    :
+*   Parcel* parent  :   the root node of BSTs to display parcels.
+*   int partition   :   the weight partitions parcels in the bst to be displayed.
+* RETURNS       :  void
+*/
 void printSectionHigherThanWgt(Parcel* parent, int partition)
 {
     if (parent != NULL)
@@ -484,6 +493,14 @@ void printSectionHigherThanWgt(Parcel* parent, int partition)
     }
 }
 
+/*
+* FUNCTION      : printBSTInOrder
+* DESCRIPTION   :
+*   This functoin prints out all the parcels  within a BST in weight ascending order.
+* PARAMETERS    :
+*   Parcel* parent  :   the root node of BSTs to display parcels.
+* RETURNS       :  void
+*/
 void printBSTInOrder(Parcel* parent)
 {
     if (parent == NULL)
@@ -497,6 +514,15 @@ void printBSTInOrder(Parcel* parent)
         printBSTInOrder(parent->Right);
     }
 }
+
+/*
+* FUNCTION      : deleteBST
+* DESCRIPTION   :
+*   This functoin frees memory of all parcel nodes in a BST.
+* PARAMETERS    :
+*   Parcel* parent :  the root node of the BSTs to be deleted.
+* RETURNS       :  void
+*/
 void deleteBST(Parcel* parent)
 {
     if (parent == NULL)
@@ -510,12 +536,34 @@ void deleteBST(Parcel* parent)
         deleteParcel(parent);
     }
 }
+/*
+* FUNCTION      : insertHashTableWithBST
+* DESCRIPTION   :
+*   This functoin creates a parcel node based on given data and inserts the node 
+*    to a BST within a bucket of a hash table using destination as the key.
+* PARAMETERS    :
+*   Parcel* table[] :  the hash table to contain BSTs.
+*   char* dest      :   the destination of a parcel
+*   int weight      :   the weight of a parcel
+*   float value     :   the value of a parcel
+* RETURNS       :  void
+*/
 void insertHashTableWithBST(Parcel* table[], char* dest, int weight, float value)
 {
     int hash = generateHash(dest);
     Parcel* newParcel = createNewParcel(dest, weight, value);
     table[hash] = insertParcelToBST(table[hash], newParcel);
 }
+
+/*
+* FUNCTION      : deleteHashTable
+* DESCRIPTION   : 
+*   This functoin frees memory of all binary trees in the hash table.
+* PARAMETERS    :
+*   Parcel* table[] :  the hash table containing BSTs to be deleted.  
+*   int tableSize   :   the size of the table
+* RETURNS       :  void
+*/
 void deleteHashTable(Parcel* table[], int tableSize)
 {
     for (int i = 0; i < tableSize; ++i)
@@ -579,13 +627,6 @@ void printLighterParcelsInCountry(Parcel* table[], char* country, int wgt)
 {
     int hash = generateHash(country);
     printf("\n/====================== Lighter than %d gms ===================/\n\n", wgt);
-    /*
-    if (wgt <= findMinWeight(table[hash])->Weight) 
-    {
-        printf("Parcel not found\n");
-        return;
-    }
-    */
     printSectionLowerThanWgt(table[hash], wgt);
     
 }
@@ -605,13 +646,6 @@ void printHeavierParcelsInCountry(Parcel* table[], char* country, int wgt)
 {
     int hash = generateHash(country);
     printf("\n/====================== Heavier than %d gms ==================/\n\n", wgt);
-    /*
-    if (wgt >= findMaxWeight(table[hash])->Weight)
-    {
-        printf("Parcel not found\n");
-        return;
-    }
-    */
     printSectionHigherThanWgt(table[hash], wgt);    
 }
 
